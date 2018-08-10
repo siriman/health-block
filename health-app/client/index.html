@@ -1,0 +1,321 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hyperledger Fabric Tuna Application</title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: lightgray;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      } 
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Hyperledger Fabric Health-Block</div>
+      <i id="right_header">Example Blockchain Application for Healthcare</i>
+    </header>
+
+    <div id="body">
+      <div class="form-group">
+        <label>Query All Hospitals</label>
+        <p><input id="queryHospitals" type="submit" value="Query" class="btn btn-primary" ng-click="queryHospitals()"></p>
+      </div>
+ 
+      <table id="all_hospitals" class="table" align="center">
+
+        <tr>
+          <th>HospitalID</th>
+          <th>Name</th>
+          <th>Country</th>
+          <th>Balance</th>
+        </tr>
+
+        <tr ng-repeat="hospitals in all_hospitals">
+          <td>{{hospital.hospitalID}}</td>
+          <td>{{hospital.name}}</td>
+          <td>{{hospital.country}}</td>
+          <td>{{hospital.balance}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query All Doctors</label>
+        <p><input id="queryDoctors" type="submit" value="Query" class="btn btn-primary" ng-click="queryDoctors()"></p>
+      </div>
+ 
+      <table id="all_doctors" class="table" align="center">
+
+        <tr>
+          <th>DoctorID</th>
+          <th>Name</th>
+          <th>HospitalID</th>
+          <th>Balance</th>
+        </tr>
+
+        <tr ng-repeat="doctors in all_doctors">
+          <td>{{doctor.doctorID}}</td>
+          <td>{{doctor.name}}</td>
+          <td>{{doctor.hospitalID}}</td>
+          <td>{{doctor.balance}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query All Patients</label>
+        <p><input id="queryPatients" type="submit" value="Query" class="btn btn-primary" ng-click="queryPatients()"></p>
+      </div>
+ 
+      <table id="all_patients" class="table" align="center">
+
+        <tr>
+          <th>PatientID</th>
+          <th>Name</th>
+          <th>ReportID</th>
+          <th>HospitalID</th>
+          <th>Balance</th>
+        </tr>
+
+        <tr ng-repeat="patients in all_patients">
+          <td>{{patient.patientID}}</td>
+          <td>{{patient.name}}</td>
+          <td>{{patient.reportID}}</td>
+          <td>{{patient.hospitalID}}</td>
+          <td>{{patient.balance}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query All Reports</label>
+        <p><input id="queryReports" type="submit" value="Query" class="btn btn-primary" ng-click="queryReports()"></p>
+      </div>
+ 
+      <table id="all_reports" class="table" align="center">
+
+        <tr>
+          <th>ReportID</th>
+          <th>PatientID</th>
+          <th>HospitalID</th>
+          <th>Fee</th>
+        </tr>
+
+        <tr ng-repeat="reports in all_reports">
+          <td>{{report.reportID}}</td>
+          <td>{{report.patientID}}</td>
+          <td>{{report.hospitalID}}</td>
+          <td>{{report.fee}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query a Specific Hospital</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid HospitalID</h5>
+        
+        Enter an HospitalID: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="query_id">
+        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="query()">
+      </div>
+
+      <table id="query" class="table" align="center">
+
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Country</th>
+          <th>Balance</th>
+        </tr>
+
+        <tr>
+          <td>{{query.hospitalID}}</td>
+          <td>{{query.name}}</td>
+          <td>{{query.country}}</td>
+          <td>{{query.balance}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query a Specific Doctor</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid DoctorID</h5>
+        
+        Enter an DoctorID: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="query_id">
+        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="query()">
+      </div>
+
+      <table id="query" class="table" align="center">
+
+        <tr>
+          <th>DoctorID</th>
+          <th>Name</th>
+          <th>HospitalID</th>
+          <th>Balance</th>
+        </tr>
+
+        <tr>
+          <td>{{query.hospitalID}}</td>
+          <td>{{query.name}}</td>
+          <td>{{query.hospitalID}}</td>
+          <td>{{query.balance}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query a Specific Patient</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid PatientID</h5>
+        
+        Enter an PatientID: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="query_id">
+        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="query()">
+      </div>
+
+      <table id="query" class="table" align="center">
+
+        <tr>
+          <th>PatientID</th>
+          <th>Name</th>
+          <th>ReportID</th>
+          <th>HospitalID</th>
+          <th>Balance</th>
+        </tr>
+
+        <tr>
+          <td>{{query.patientID}}</td>
+          <td>{{query.name}}</td>
+          <td>{{query.reportID}}</td>
+          <td>{{query.hospitalID}}</td>
+          <td>{{query.balance}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query a Specific Report</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid ReportID</h5>
+        
+        Enter an ReportID: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="query_id">
+        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="query()">
+      </div>
+
+      <table id="query" class="table" align="center">
+
+        <tr>
+          <th>ReportID</th>
+          <th>PatientID</th>
+          <th>HospitalID</th>
+          <th>Fee</th>
+        </tr>
+
+        <tr>
+          <td>{{query.reportID}}</td>
+          <td>{{query.patientID}}</td>
+          <td>{{query.hospitalID}}</td>
+          <td>{{query.fee}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Create Hospital</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_hospital}}</h5>
+        <br>
+        Enter HospitalID: <input class="form-control" type="text" placeholder="Ex: H044" ng-model="hospital.hospitalID">
+        Enter Name: <input class="form-control" type="text" placeholder="Ex: Hospital_44" ng-model="hospital.name">
+        Enter Country: <input class="form-control" type="text" placeholder="Ex: India" ng-model="hospital.country"> 
+        Enter Balance: <input class="form-control" type="text" placeholder="Ex: 10000" ng-model="hospital.balance">
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="createHospital()"> 
+      </div>
+
+      <div class="form-group">
+        <label>Create Doctor</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_doctor}}</h5>
+        <br>
+        Enter DoctorID: <input class="form-control" type="text" placeholder="Ex: D044" ng-model="doctor.doctorID">
+        Enter Name: <input class="form-control" type="text" placeholder="Ex: Doctor_44" ng-model="doctor.name">
+        Enter HospitalID: <input class="form-control" type="text" placeholder="Ex: H044" ng-model="doctor.hospitalID"> 
+        Enter Balance: <input class="form-control" type="text" placeholder="Ex: 10000" ng-model="doctor.balance">
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="createDoctor()"> 
+      </div>
+
+      <div class="form-group">
+        <label>Create Patient</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_patient}}</h5>
+        <br>
+        Enter PatientID: <input class="form-control" type="text" placeholder="Ex: P044" ng-model="patient.patientID">
+        Enter Name: <input class="form-control" type="text" placeholder="Ex: Patient_44" ng-model="patient.name">
+        Enter ReportID: <input class="form-control" type="text" placeholder="Ex: R044" ng-model="patient.reportID"> 
+        Enter HospitalID: <input class="form-control" type="text" placeholder="Ex: H044" ng-model="patient.hospitalID"> 
+        Enter Balance: <input class="form-control" type="text" placeholder="Ex: 10000" ng-model="patient.balance">
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="createPatient()"> 
+      </div>
+
+      <div class="form-group">
+        <label>Create Report</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_report}}</h5>
+        <br>
+        Enter ReportID: <input class="form-control" type="text" placeholder="Ex: R044" ng-model="report.reportID">
+        Enter PatientID: <input class="form-control" type="text" placeholder="Ex: P044" ng-model="report.patientID">
+        Enter HospitalID: <input class="form-control" type="text" placeholder="Ex: H044" ng-model="report.hospitalID"> 
+        Enter Fee: <input class="form-control" type="text" placeholder="Ex: 10000" ng-model="report.fee">
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="createReport()"> 
+      </div>
+
+      <div class="form-group">
+        <label>Transfer Patient to Another Hospital</label><br>
+        <h5 style="color:green;margin-bottom:2%" id="success_transfer">Success! Tx ID: {{transfer_patient}}</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_transfer">Error: Please enter a valid PatientID</h5>
+        Enter a PatientID: <input class="form-control" name="assetSelect" placeholder="Ex: 1" ng-model="transfer.patientID">
+        Enter new HospitalID: <input class="form-control" name="assetSelect" placeholder="Ex: Barry" ng-model="transfer.hospitalID">
+        <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" ng-click="transferPatient()">
+      </div>
+
+    </div>
+  </body>
+    <!-- requiring the angular page -->
+    <script type="text/javascript" src="app.js"> </script>
+</html>
