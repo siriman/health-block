@@ -19,7 +19,8 @@ channel named "mychannel"
 
 ### Navigate to
 * ``cd health-block/health-app``
-To start the network, simply run ``startFabric.sh``.
+To start the network, simply run ``run.sh``.
+To stop and teardown the network, simply run ``stop.sh``.
 
 #### Run to register admins and users
 * ``node enrollAdmin.js``
