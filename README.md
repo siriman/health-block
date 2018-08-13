@@ -3,7 +3,7 @@
 
 ##### Built upon Hyperledger Fabric version 1.2
 This network is based on single org, single channel and single chaincode.
-The backend is build using NodeJS and frontend is based on AngularJS (AngularJS part is half done, till date).
+The backend is build using NodeJS and frontend is based on AngularJS.
 
 In the network, there are hospitals, doctors and patients as members and reports as assets.
 

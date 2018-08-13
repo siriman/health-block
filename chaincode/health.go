@@ -25,35 +25,35 @@ type SmartContract struct {
 
 // Define the hospital structure, with 3 properties.  Structure tags are used by encoding/json library
 type Hospital struct {
-	HospitalID   string  `json:"hospitalID"`
-        Name         string  `json:"name"`
-	Country      string  `json:"country"`
-	Balance      float64 `json:"Balance"`
+	HospitalID string  `json:"hospitalID"`
+	Name       string  `json:"name"`
+	Country    string  `json:"country"`
+	Balance    float64 `json:"Balance"`
 }
 
 // Define the doctor structure, with 3 properties.  Structure tags are used by encoding/json library
 type Doctor struct {
-	DoctorID     string  `json:"doctorID"`
-	Name         string  `json:"name"`
-        HospitalID   string  `json:"hospitalID"`
-	Balance      float64 `json:"Balance"`
+	DoctorID   string  `json:"doctorID"`
+	Name       string  `json:"name"`
+	HospitalID string  `json:"hospitalID"`
+	Balance    float64 `json:"Balance"`
 }
 
 // Define the patient structure, with 3 properties.  Structure tags are used by encoding/json library
 type Patient struct {
-	PatientID    string  `json:"patientID"`
-	Name         string  `json:"name"`
-	ReportID     string  `json:"reportID"`
-	HospitalID   string  `json:"hospitalID"`
-	Balance      float64 `json:"balance"`
+	PatientID  string  `json:"patientID"`
+	Name       string  `json:"name"`
+	ReportID   string  `json:"reportID"`
+	HospitalID string  `json:"hospitalID"`
+	Balance    float64 `json:"balance"`
 }
 
 // Define the report structure, with 3 properties.  Structure tags are used by encoding/json library
 type Report struct {
-	ReportID     string  `json:"reportID"`
-	PatientID    string  `json:"patientID"`
-	HospitalID   string  `json:"hospitalID"`
-	Fee      float64     `json:"fee"`
+	ReportID   string  `json:"reportID"`
+	PatientID  string  `json:"patientID"`
+	HospitalID string  `json:"hospitalID"`
+	Fee        float64 `json:"fee"`
 }
 
 /*
@@ -89,15 +89,15 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.createReport(APIstub, args)
 	} else if function == "queryAllHospitals" { //return all the hospitals on the ledger
 		return s.queryAllHospitals(APIstub)
-        }  else if function == "queryAllDoctors" { //return all the doctors on the ledger
+	} else if function == "queryAllDoctors" { //return all the doctors on the ledger
 		return s.queryAllDoctors(APIstub)
-        } else if function == "queryAllPatients" { //return all the patients on the ledger
+	} else if function == "queryAllPatients" { //return all the patients on the ledger
 		return s.queryAllPatients(APIstub)
-        }  else if function == "queryAllReports" { //return all the reports on the ledger
+	} else if function == "queryAllReports" { //return all the reports on the ledger
 		return s.queryAllReports(APIstub)
-        }  else if function == "transferPatient" { //change HospitalID
+	} else if function == "transferPatient" { //change HospitalID
 		return s.transferPatient(APIstub, args)
-        }
+	}
 
 	return shim.Error("Invalid Smart Contract function name.")
 }
@@ -119,7 +119,7 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 		{DoctorID: "D006", Name: "DOCTOR_6", HospitalID: "H003", Balance: 100000.0},
 	}
 
-        patients := []Patient{
+	patients := []Patient{
 		{PatientID: "P001", Name: "PATIENT_1", ReportID: "R001", HospitalID: "H001", Balance: 10000.0},
 		{PatientID: "P002", Name: "PATIENT_2", ReportID: "R002", HospitalID: "H001", Balance: 10000.0},
 		{PatientID: "P003", Name: "PATIENT_3", ReportID: "R003", HospitalID: "H002", Balance: 10000.0},
@@ -127,19 +127,19 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 		{PatientID: "P005", Name: "PATIENT_5", ReportID: "R005", HospitalID: "H003", Balance: 10000.0},
 		{PatientID: "P006", Name: "PATIENT_6", ReportID: "R006", HospitalID: "H003", Balance: 10000.0},
 	}
-	
-        reports := []Report{
+
+	reports := []Report{
 		{ReportID: "R001", PatientID: "P001", HospitalID: "H001", Fee: 1000.0},
 		{ReportID: "R002", PatientID: "P002", HospitalID: "H001", Fee: 500.0},
 		{ReportID: "R003", PatientID: "P003", HospitalID: "H002", Fee: 800.0},
 		{ReportID: "R004", PatientID: "P004", HospitalID: "H002", Fee: 1000.0},
 		{ReportID: "R005", PatientID: "P005", HospitalID: "H003", Fee: 600.0},
 		{ReportID: "R006", PatientID: "P006", HospitalID: "H003", Fee: 1000.0},
-        }
+	}
 
 	writeHospitalToLedger(APIstub, hospitals)
 	writeDoctorToLedger(APIstub, doctors)
-        writePatientToLedger(APIstub, patients)
+	writePatientToLedger(APIstub, patients)
 	writeReportToLedger(APIstub, reports)
 
 	return shim.Success(nil)
@@ -288,7 +288,6 @@ func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, args []string
 	return shim.Success(asBytes)
 }
 
-
 /** ----------------------------------------------------------------------------------------------
 create hospital needs 4 args
 HospitalID     string  `json:"hospitalID"`
@@ -328,6 +327,7 @@ func (s *SmartContract) createDoctor(APIstub shim.ChaincodeStubInterface, args [
 	writeDoctorToLedger(APIstub, doctors)
 	return shim.Success(nil)
 }
+
 /**----------------------------------------------------------------------------------------------
 createPatient needs 5 args
 	PatientID     string  `json:"patientID"`
@@ -500,7 +500,7 @@ func (s *SmartContract) queryAllDoctors(APIstub shim.ChaincodeStubInterface) sc.
 	}
 	buffer.WriteString("]")
 
-        fmt.Printf("- queryAllDoctors:\n%s\n", buffer.String())
+	fmt.Printf("- queryAllDoctors:\n%s\n", buffer.String())
 
 	return shim.Success(buffer.Bytes())
 }
@@ -545,7 +545,7 @@ func (s *SmartContract) queryAllPatients(APIstub shim.ChaincodeStubInterface) sc
 	}
 	buffer.WriteString("]")
 
-        fmt.Printf("- queryAllPatients:\n%s\n", buffer.String())
+	fmt.Printf("- queryAllPatients:\n%s\n", buffer.String())
 
 	return shim.Success(buffer.Bytes())
 }
@@ -590,7 +590,7 @@ func (s *SmartContract) queryAllReports(APIstub shim.ChaincodeStubInterface) sc.
 	}
 	buffer.WriteString("]")
 
-        fmt.Printf("- queryAllReports:\n%s\n", buffer.String())
+	fmt.Printf("- queryAllReports:\n%s\n", buffer.String())
 
 	return shim.Success(buffer.Bytes())
 }

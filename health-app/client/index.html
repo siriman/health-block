@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hyperledger Fabric Tuna Application</title>
+    <title>Hyperledger Fabric Health-Block Application</title>
     <link rel="icon" href="favicon.png" type="image/gif">
 
     <!-- require jquery and bootstrap scripts -->
@@ -82,7 +82,7 @@
           <th>Balance</th>
         </tr>
 
-        <tr ng-repeat="hospitals in all_hospitals">
+        <tr ng-repeat="hospital in all_hospitals">
           <td>{{hospital.hospitalID}}</td>
           <td>{{hospital.name}}</td>
           <td>{{hospital.country}}</td>
@@ -104,7 +104,7 @@
           <th>Balance</th>
         </tr>
 
-        <tr ng-repeat="doctors in all_doctors">
+        <tr ng-repeat="doctor in all_doctors">
           <td>{{doctor.doctorID}}</td>
           <td>{{doctor.name}}</td>
           <td>{{doctor.hospitalID}}</td>
@@ -127,7 +127,7 @@
           <th>Balance</th>
         </tr>
 
-        <tr ng-repeat="patients in all_patients">
+        <tr ng-repeat="patient in all_patients">
           <td>{{patient.patientID}}</td>
           <td>{{patient.name}}</td>
           <td>{{patient.reportID}}</td>
@@ -150,7 +150,7 @@
           <th>Fee</th>
         </tr>
 
-        <tr ng-repeat="reports in all_reports">
+        <tr ng-repeat="report in all_reports">
           <td>{{report.reportID}}</td>
           <td>{{report.patientID}}</td>
           <td>{{report.hospitalID}}</td>
